@@ -3,6 +3,8 @@ import torch
 
 from model.wide_res_net import WideResNet
 from model.smooth_cross_entropy import smooth_crossentropy
+from model.restnet18 import BasicBlock, ResNet
+from model.vgg16 import VGG16
 from data.cifar import Cifar
 from utility.log import Log
 from utility.initialize import initialize
@@ -15,6 +17,7 @@ from sam import SAM
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--arch", default='res', type=str, choices=['res', 'vgg'], help="Architechture of model.")
     parser.add_argument("--adaptive", default=True, type=bool, help="True if you want to use the Adaptive SAM.")
     parser.add_argument("--batch_size", default=128, type=int, help="Batch size used in the training and validation loop.")
     parser.add_argument("--depth", default=16, type=int, help="Number of layers.")
@@ -34,7 +37,11 @@ if __name__ == "__main__":
 
     dataset = Cifar(args.batch_size, args.threads)
     log = Log(log_each=10)
-    model = WideResNet(args.depth, args.width_factor, args.dropout, in_channels=3, labels=10).to(device)
+
+    if args.arch == 'res':
+        model = ResNet(img_channels=3, num_layers=18, block=BasicBlock, num_classes=10)    
+    if args.arch == 'vgg':
+        model = VGG16(num_classes=10)
 
     base_optimizer = torch.optim.SGD
     optimizer = SAM(model.parameters(), base_optimizer, rho=args.rho, adaptive=args.adaptive, lr=args.learning_rate, momentum=args.momentum, weight_decay=args.weight_decay)
