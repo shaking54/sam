@@ -21,7 +21,7 @@ class Log:
         self._reset(len_dataset)
 
     def eval(self, len_dataset: int) -> None:
-        self.flush()
+        loss, accuracy = self.flush()
         self.is_train = False
         self._reset(len_dataset)
 
@@ -50,7 +50,9 @@ class Log:
 
             if accuracy > self.best_accuracy:
                 self.best_accuracy = accuracy
-
+        
+        return loss, 100 * accuracy
+        
     def _train_step(self, model, loss, accuracy, learning_rate: float) -> None:
         self.learning_rate = learning_rate
         self.last_steps_state["loss"] += loss.sum().item()
@@ -73,11 +75,13 @@ class Log:
                 end="",
                 flush=True,
             )
+            return loss, 100 * accuracy
 
     def _eval_step(self, loss, accuracy) -> None:
         self.epoch_state["loss"] += loss.sum().item()
         self.epoch_state["accuracy"] += accuracy.sum().item()
         self.epoch_state["steps"] += loss.size(0)
+        return self.epoch_state["loss"] / self.epoch_state["steps"], self.epoch_state["accuracy"] / self.epoch_state["steps"]
 
     def _reset(self, len_dataset: int) -> None:
         self.start_time = time.time()

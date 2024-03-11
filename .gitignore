@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+/checkpoints
+/cifar
+/data/cifar-10-batches-py
+/data/cifar-10-python.tar.gz
+
+.vscode
+.github
+__pycache__
+wandb
