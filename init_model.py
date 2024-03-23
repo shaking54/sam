@@ -8,6 +8,7 @@ from torch.optim import SGD
 from model.smooth_cross_entropy import smooth_crossentropy
 from model.resnet import BasicBlock, Bottleneck, ResNet
 from model.vgg import VGG
+from model.wide_res_net import WideResNet
 from data.cifar import Cifar, Cifar100
 from utility.log import Log
 from utility.initialize import initialize
@@ -67,7 +68,7 @@ class init_model:
         self.dataset = self._get_data()
 
 
-        wandb.init(project="SAM", 
+        wandb.init(project="SAM_exp2", 
                    name=f"{self.arch}_{self.num_class}_{self.epochs}_{self.optim}", 
                    config={"arch": self.arch,
                            "optim": self.optim,
@@ -107,6 +108,8 @@ class init_model:
             return VGG('VGG16', num_classes=self.num_class)
         elif arch == 'vgg19':
             return VGG('VGG19', num_classes=self.num_class)
+        elif arch == 'wideres':
+            return WideResNet(self.depth, self.width_factor, self.dropout, 3, self.num_class)
         else:
             raise ValueError("Invalid model name")
     
@@ -202,4 +205,6 @@ class init_model:
         # self.log.flush()
 
     def save(self):
+        if os.path.exists('checkpoints') == False:
+            os.makedirs('checkpoints')
         torch.save(self.model.state_dict(), f"checkpoints/{self.arch}_cifar{self.num_class}_{self.epochs}_{self.optim}.pt")

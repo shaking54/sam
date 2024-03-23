@@ -58,8 +58,8 @@ class Cifar100:
             transforms.Normalize(mean, std)
         ])
 
-        train_set = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=train_transform)
-        test_set = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=test_transform)
+        train_set = torchvision.datasets.CIFAR100(root='./data', train=True, download=True, transform=train_transform)
+        test_set = torchvision.datasets.CIFAR100(root='./data', train=False, download=True, transform=test_transform)
 
         self.num_train = len(train_set)
         self.num_val = len(test_set)

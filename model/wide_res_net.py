@@ -91,3 +91,9 @@ class WideResNet(nn.Module):
 
     def forward(self, x):
         return self.f(x)
+
+if __name__ == '__main__':
+    model = WideResNet(16, 8, 0.0, 3, 10)
+    x = torch.randn(1, 3, 32, 32)
+    y = model(x)
+    print(y.size())
