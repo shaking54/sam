@@ -11,8 +11,7 @@ pip install -r requirements.txt
 python train.py --arch res18 --optim sam --epochs 10 --num_class 10
 ```
 
-[!NOTE]
-num_classs == 10 -> cifa10, num_class == 100 -> cifa100
+[!NOTE] num_classs == 10 -> cifa10, num_class == 100 -> cifa100
 
 List of model:
 
