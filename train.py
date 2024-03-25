@@ -21,7 +21,7 @@ if __name__ == "__main__":
     parser.add_argument("--arch", default='res18', type=str, choices=['res18','res34', 'res50', 'res101', 'res152','vgg11','vgg13','vgg16','vgg19', 'wideres'], help="Architechture of model.")
     parser.add_argument("--optim", default='sam', type=str, choices=['sam', 'sgd'], help="Architechture of model.")
     parser.add_argument("--num_class", default='10', choices=['10', '100'], type=str, help="Cifar-10 or Cifar-100.")
-    parser.add_argument("--adaptive", default=True, type=bool, help="True if you want to use the Adaptive SAM.")
+    parser.add_argument("--adaptive", default=False, type=bool, help="True if you want to use the Adaptive SAM.")
     parser.add_argument("--batch_size", default=128, type=int, help="Batch size used in the training and validation loop.")
     parser.add_argument("--depth", default=16, type=int, help="Number of layers.")
     parser.add_argument("--dropout", default=0.0, type=float, help="Dropout rate.")
